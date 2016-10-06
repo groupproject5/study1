@@ -1,0 +1,121 @@
+  public ViewCustomerBORes.RootObjectViewOut getdetailsbySSN(ViewCustomerBOReq.Customer objviewbyssnbo)
+        {
+
+            RestClient rc = new RestClient("https://apphonics.tcs.com/token");
+            rc.Proxy = System.Net.HttpWebRequest.GetSystemWebProxy();
+            rc.Proxy.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"], "India");
+            ViewCustomerBOReq.RootObjectView ro = new ViewCustomerBOReq.RootObjectView();
+            ViewCustomerBOReq.Request req = new ViewCustomerBOReq.Request();
+            req.resource = "getcustomerdetail";
+            ro.request = req;
+
+           
+
+                ro.request.customer = objviewbyssnbo;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Authorization", "Basic QmhyZnpRYXJNZm1GSmprWld4Z19pNktjVDNVYTpseDhHUUN1SzF0TWI2SlZJY1J5dkxwWEt1V29h, Content-Type: application/x-www-form-urlencoded");
+                request.AddParameter("grant_type", "client_credentials");
+                var resp = rc.Execute(request);
+                if (resp.ResponseStatus == ResponseStatus.Completed && resp.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    CustomerAppPhonic T = JsonConvert.DeserializeObject<CustomerAppPhonic>(resp.Content);
+                    rc.BaseUrl = new Uri("https://apphonics.tcs.com/public/customers/1.0/getcus");
+                    var restreq = new RestRequest(Method.POST);
+                    restreq.AddHeader("Authorization", "Bearer " + T.access_token);
+                    restreq.AddHeader("Content-type", "application/json");
+                    restreq.AddBody(ro);
+                    restreq.Parameters[2].Name = "body";
+                    var response = rc.Execute(restreq);
+                    if (response.ResponseStatus == ResponseStatus.Completed)
+                    {
+                        var rootObj = JsonConvert.DeserializeObject<ViewCustomerBORes.RootObjectViewOut>(response.Content);
+                        return rootObj;
+                    }
+                }
+
+            
+            return null;
+        }
+
+
+        public ViewCustomerBOResByID.RootObjectViewByIDOut getdetailsbyID(ViewCustomerBOReqByID.Customer objviewbyidbo)
+        {
+
+            RestClient rc = new RestClient("https://apphonics.tcs.com/token");
+            rc.Proxy = System.Net.HttpWebRequest.GetSystemWebProxy();
+            rc.Proxy.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"], "India");
+            ViewCustomerBOReqByID.RootObjectViewByID ro = new ViewCustomerBOReqByID.RootObjectViewByID();
+            ViewCustomerBOReqByID.Request req = new ViewCustomerBOReqByID.Request();
+            req.resource = "getcustomerdetail";
+            ro.request = req;
+
+
+
+            ro.request.customer = objviewbyidbo;
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Basic QmhyZnpRYXJNZm1GSmprWld4Z19pNktjVDNVYTpseDhHUUN1SzF0TWI2SlZJY1J5dkxwWEt1V29h, Content-Type: application/x-www-form-urlencoded");
+            request.AddParameter("grant_type", "client_credentials");
+            var resp = rc.Execute(request);
+            if (resp.ResponseStatus == ResponseStatus.Completed && resp.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                CustomerAppPhonic T = JsonConvert.DeserializeObject<CustomerAppPhonic>(resp.Content);
+                rc.BaseUrl = new Uri("https://apphonics.tcs.com/public/customers/1.0/getcus");
+                var restreq = new RestRequest(Method.POST);
+                restreq.AddHeader("Authorization", "Bearer " + T.access_token);
+                restreq.AddHeader("Content-type", "application/json");
+                restreq.AddBody(ro);
+                restreq.Parameters[2].Name = "body";
+                var response = rc.Execute(restreq);
+                if (response.ResponseStatus == ResponseStatus.Completed)
+                {
+                    var rootObj = JsonConvert.DeserializeObject<ViewCustomerBOResByID.RootObjectViewByIDOut>(response.Content);
+                    return rootObj;
+                }
+            }
+
+
+            return null;
+        }
+
+
+
+
+
+
+
+        public UpdateCustomerBoResponse.RootObjectUpdateOut updateDetails(UpdateCustomerBoRequest.Customer objupdateBoreq)
+        {
+
+            RestClient rc = new RestClient("https://apphonics.tcs.com/token");
+            rc.Proxy = System.Net.HttpWebRequest.GetSystemWebProxy();
+            rc.Proxy.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"], "India");
+            UpdateCustomerBoRequest.RootObjectupdate ro = new UpdateCustomerBoRequest.RootObjectupdate();
+            UpdateCustomerBoRequest.Request req = new UpdateCustomerBoRequest.Request();
+            req.resource = "updatecustomer";
+            ro.request = req;
+            ro.request.customer = objupdateBoreq;
+            // var resp1 = rc.Execute(ro);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "Basic QmhyZnpRYXJNZm1GSmprWld4Z19pNktjVDNVYTpseDhHUUN1SzF0TWI2SlZJY1J5dkxwWEt1V29h, Content-Type: application/x-www-form-urlencoded");
+            request.AddParameter("grant_type", "client_credentials");
+            var resp = rc.Execute(request);
+            if (resp.ResponseStatus == ResponseStatus.Completed && resp.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                CustomerAppPhonic T = JsonConvert.DeserializeObject<CustomerAppPhonic>(resp.Content);
+                rc.BaseUrl = new Uri("https://apphonics.tcs.com:443/public/customers/1.0/updcus");
+                var restreq = new RestRequest(Method.POST);
+                restreq.AddHeader("Authorization", "Bearer " + T.access_token);
+                restreq.AddHeader("Content-type", "application/json");
+                restreq.AddBody(ro);
+                restreq.Parameters[2].Name = "body";
+                var response = rc.Execute(restreq);
+                if (response.ResponseStatus == ResponseStatus.Completed)
+                {
+                    var rootObj = JsonConvert.DeserializeObject<UpdateCustomerBoResponse.RootObjectUpdateOut>(response.Content);
+                    return rootObj;
+                }
+            }
+            return null;
+
+
+        }
